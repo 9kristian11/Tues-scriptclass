@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Homepage</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+</head>
+<div class="parallax"></div>
+<p style="background-image: url('{{ url_for('static', filename='images/couple.jpg') }}');">
+  Текст върху изображението
+</p>
+<body class="centerpage">
+    <h1 class="glaventext">
+  <span class="tues">Tues</span><span class="chat">Chat</span>
+</h1>
+
+    <p class="opisanie">A site for making friends. A site for relationships.</p>
+    
+    <div class="button-container">
+   <a href="{{ url_for('join') }}" class="button">Join Class Chat</a>
+    </div>
+</body>
+</html>

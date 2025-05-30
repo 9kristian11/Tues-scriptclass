@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block content %}
+<form method="post" class="buttons">
+  <h3>Join Your Class Chat</h3>
+  <div>
+    <label>Name:</label>
+    <input
+      type="text"
+      placeholder="Pick a name!"
+      name="name"
+      value="{{name}}"
+    />
+  </div>
+
+  <div class="join">
+    <label for="code">Select Class:</label>
+    <select name="code">
+      <option value="8">8 клас</option>
+      <option value="9">9 клас</option>
+      <option value="10">10 клас</option>
+      <option value="11">11 клас</option>
+      <option value="12">12 клас</option>
+    </select>
+    <button type="submit" name="join">Join Class Chat</button>
+  </div>
+
+  <div class="buttonconteiner2">
+      <a href="{{ url_for('homepage') }}" class="button">Return to Homepage</a>
+  </div>
+  {% if error %}
+  <ul>
+    <li>{{error}}</li>
+  </ul>
+  {% endif %}
+</form>
+{% endblock %}
