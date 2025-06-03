@@ -2,6 +2,11 @@
 {% block content %}
 <div class="message-box">
   <h2>TuesChat App: {{code}}. клас</h2>
+  <!-- dobaveno za user lista -->
+  <div class="user-list">
+    <h3>Потребители в стаята:</h3>
+    <ul id="userList"></ul>
+  </div>
   <div class="messages" id="messages"></div>
   <div class="inputs">
     <input
@@ -16,14 +21,34 @@
   </div>
 </div>
 
+<style>
+  .male {
+    color: blue;
+    font-weight: bold;
+  }
+  .female {
+    color: deeppink;
+    font-weight: bold;
+  }
+  .user-list {
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-bottom: 10px;
+  max-height: 150px;
+  overflow-y: auto;
+}
+
+</style>
+
 <script type="text/javascript">
   var socketio = io();
   const messages = document.getElementById("messages");
 
-  const createMessage = (name, msg) => {
+  const createMessage = (name, msg, gender = "") => {
+    const genderClass = gender === "male" ? "male" : gender === "female" ? "female" : "";
     const content = `
       <div class="text">
-        <span><strong>${name}</strong>: ${msg}</span>
+        <span><strong class="${genderClass}">${name}</strong>: ${msg}</span>
         <span class="muted">${new Date().toLocaleString()}</span>
       </div>
     `;
@@ -31,7 +56,26 @@
   };
 
   socketio.on("message", (data) => {
-    createMessage(data.name, data.message);
+    createMessage(data.name, data.message, data.gender);
+  });
+  // --- Nova chast za user lista ---
+  const userList = document.getElementById("userList");
+
+  socketio.on("user_list", (users) => {
+    userList.innerHTML = ""; // clearva lista
+    users.forEach(user => {
+      const li = document.createElement("li");
+      // klas spored pola
+    if (user.gender === "male") {
+      li.classList.add("male");
+    } else if (user.gender === "female") {
+      li.classList.add("female");
+    }
+
+
+      li.textContent = user.name;
+      userList.appendChild(li);
+    });
   });
 
   const sendMessage = () => {
@@ -40,11 +84,20 @@
     socketio.emit("message", { data: message.value });
     message.value = "";
   };
+  const messageInput = document.getElementById("message");
+
+messageInput.addEventListener("keydown", function(event) {
+  if (event.key === "Enter") {
+    event.preventDefault();    
+    sendMessage();
+  }
+});
+<!-- Dobavih tozi listener za da mojem da natiskame enter za izprashtane na suobshtenie -->
 </script>
 
 {% for msg in messages %}
 <script type="text/javascript">
-  createMessage("{{msg.name}}", "{{msg.message}}");
+  createMessage("{{msg.name}}", "{{msg.message}}", "{{msg.gender}}");
 </script>
 {% endfor %}
 {% endblock %}
