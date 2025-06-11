@@ -330,9 +330,9 @@ h2 {
 
   .buttoncontainer-room {
     position: fixed;
-    bottom: 30px;   
-    right:850px ;
-    z-index: 10;
+  bottom: 30px;
+  left: 840px;
+  z-index: 10;
   }
 
   .buttoncontainer-room .button {

@@ -1,5 +1,11 @@
 from flask import Flask, render_template, request, session, redirect, url_for
 from flask_socketio import join_room, leave_room, send, SocketIO
+from datetime import datetime
+
+def log_chat_to_file(room, name, message):
+    timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    with open(f"chat_log_{room}.txt", "a", encoding="utf-8") as f:
+        f.write(f"[{timestamp}] {name}: {message}\n")
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "hjhjsdahhds"
@@ -67,8 +73,12 @@ def message(data):
         "message": data["data"],
         "gender": session.get("gender") #promqnata mi za pola
     }
+
     send(content, to=room)
     rooms[room]["messages"].append(content)
+
+    log_chat_to_file(room, content["name"], content["message"])
+
     print(f"{session.get('name')} said: {data['data']}")
 
 @socketio.on("connect")
