@@ -19,6 +19,9 @@
       Send
     </button>
   </div>
+  <div class="buttoncontainer-room">
+  <a href="{{ url_for('join') }}" class="button">Return to Homepage</a>
+  </div>
 </div>
 
 <style>
@@ -43,18 +46,28 @@
 <script type="text/javascript">
   var socketio = io();
   const messages = document.getElementById("messages");
-
-  const createMessage = (name, msg, gender = "") => {
-    const genderClass = gender === "male" ? "male" : gender === "female" ? "female" : "";
-    const content = `
-      <div class="text">
-        <span><strong class="${genderClass}">${name}</strong>: ${msg}</span>
-        <span class="muted">${new Date().toLocaleString()}</span>
-      </div>
-    `;
-    messages.innerHTML += content;
+  const isScrolledToBottom = () => {
+    return messages.scrollHeight - messages.clientHeight <= messages.scrollTop + 10;
   };
 
+  const scrollToBottom = () => {
+    messages.scrollTop = messages.scrollHeight;
+  };
+
+  const createMessage = (name, msg, gender = "") => {
+  const genderClass = gender === "male" ? "male" : gender === "female" ? "female" : "";
+  const content = `
+    <div class="text">
+      <span><strong class="${genderClass}">${name}</strong>: ${msg}</span>
+      <span class="muted">${new Date().toLocaleString()}</span>
+    </div>
+  `;
+  const shouldScroll = isScrolledToBottom(); 
+  messages.innerHTML += content;
+  if (shouldScroll) {
+    scrollToBottom(); 
+  }
+};
   socketio.on("message", (data) => {
     createMessage(data.name, data.message, data.gender);
   });
@@ -92,6 +105,9 @@ messageInput.addEventListener("keydown", function(event) {
     sendMessage();
   }
 });
+window.onload = () => {
+    scrollToBottom();
+  };
 <!-- Dobavih tozi listener za da mojem da natiskame enter za izprashtane na suobshtenie -->
 </script>
 

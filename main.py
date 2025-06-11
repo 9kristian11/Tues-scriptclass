@@ -32,6 +32,9 @@ def join():
 
         if code not in rooms:
             return render_template("home.html", error="Invalid class code.", code=code, name=name)
+        
+        if name in rooms[code]["users"]:
+            return render_template("home.html", error="There is a person who chose this name already.", code=code, name=name)  ##proverka za povtarqshto se ime
 
         session["room"] = code
         session["name"] = name

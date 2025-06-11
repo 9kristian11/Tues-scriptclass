@@ -110,6 +110,7 @@ body {
   background: #f7f8fa;
   border-radius: 14px 14px 0 0;
   box-shadow: 0 2px 8px rgba(60,60,90,0.04);
+  
 }
 
 .inputs {
@@ -325,3 +326,26 @@ h2 {
   box-shadow: 0 8px 24px rgba(100,100,150,0.18);
   transform: translateY(-2px) scale(1.05);
 }
+
+
+  .buttoncontainer-room {
+    position: fixed;
+    bottom: 30px;   
+    right:850px ;
+    z-index: 10;
+  }
+
+  .buttoncontainer-room .button {
+    padding: 10px 20px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: bold;
+    transition: background-color 0.3s;
+  }
+
+  .buttoncontainer-room .button:hover {
+    background-color: #2980b9;
+  }
